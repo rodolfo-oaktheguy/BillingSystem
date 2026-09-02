@@ -6,11 +6,11 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace BillingSystem
+namespace BillingSystem //Rei Nathaniel
 {
-    public partial class AddCustomerForm : Form
+    public partial class AddCustomerFormRei : Form
     {
-        public AddCustomerForm()
+        public AddCustomerFormRei()
         {
             InitializeComponent();
         }
