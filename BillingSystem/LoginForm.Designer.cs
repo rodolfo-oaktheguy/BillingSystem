@@ -41,77 +41,75 @@
             // 
             lblTitle.AutoSize = true;
             lblTitle.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lblTitle.Location = new Point(154, 30);
-            lblTitle.Margin = new Padding(4, 0, 4, 0);
+            lblTitle.Location = new Point(108, 18);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(203, 32);
+            lblTitle.Size = new Size(135, 21);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "BILLING SYSTEM";
             // 
             // lblFullName
             // 
             lblFullName.AutoSize = true;
-            lblFullName.Location = new Point(57, 153);
-            lblFullName.Margin = new Padding(4, 0, 4, 0);
+            lblFullName.Location = new Point(40, 92);
             lblFullName.Name = "lblFullName";
-            lblFullName.Size = new Size(100, 25);
+            lblFullName.Size = new Size(66, 15);
             lblFullName.TabIndex = 1;
             lblFullName.Text = "Username :";
             // 
             // txtUsername
             // 
-            txtUsername.Location = new Point(254, 153);
-            txtUsername.Margin = new Padding(4, 3, 4, 3);
+            txtUsername.Location = new Point(178, 92);
+            txtUsername.Margin = new Padding(3, 2, 3, 2);
             txtUsername.Name = "txtUsername";
-            txtUsername.Size = new Size(204, 31);
+            txtUsername.Size = new Size(144, 23);
             txtUsername.TabIndex = 2;
             txtUsername.TextChanged += txtUsername_TextChanged;
             // 
             // lblPassword
             // 
             lblPassword.AutoSize = true;
-            lblPassword.Location = new Point(57, 232);
-            lblPassword.Margin = new Padding(4, 0, 4, 0);
+            lblPassword.Location = new Point(40, 139);
             lblPassword.Name = "lblPassword";
-            lblPassword.Size = new Size(96, 25);
+            lblPassword.Size = new Size(63, 15);
             lblPassword.TabIndex = 3;
             lblPassword.Text = "Password :";
             // 
             // txtPassword
             // 
-            txtPassword.Location = new Point(254, 227);
-            txtPassword.Margin = new Padding(4, 3, 4, 3);
+            txtPassword.Location = new Point(178, 136);
+            txtPassword.Margin = new Padding(3, 2, 3, 2);
             txtPassword.Name = "txtPassword";
             txtPassword.PasswordChar = '*';
-            txtPassword.Size = new Size(204, 31);
+            txtPassword.Size = new Size(144, 23);
             txtPassword.TabIndex = 4;
             // 
             // btnSave
             // 
-            btnSave.Location = new Point(116, 345);
-            btnSave.Margin = new Padding(4, 3, 4, 3);
+            btnSave.Location = new Point(81, 207);
+            btnSave.Margin = new Padding(3, 2, 3, 2);
             btnSave.Name = "btnSave";
-            btnSave.Size = new Size(117, 37);
+            btnSave.Size = new Size(82, 22);
             btnSave.TabIndex = 11;
             btnSave.Text = "Login";
             btnSave.UseVisualStyleBackColor = true;
+            btnSave.Click += btnSave_Click;
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(290, 347);
-            textBox1.Margin = new Padding(4, 3, 4, 3);
+            textBox1.Location = new Point(203, 208);
+            textBox1.Margin = new Padding(3, 2, 3, 2);
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(103, 31);
+            textBox1.Size = new Size(73, 23);
             textBox1.TabIndex = 13;
             textBox1.Text = "Cancel";
             textBox1.TextAlign = HorizontalAlignment.Center;
             // 
             // LoginForm
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImageLayout = ImageLayout.None;
-            ClientSize = new Size(509, 562);
+            ClientSize = new Size(356, 337);
             Controls.Add(textBox1);
             Controls.Add(btnSave);
             Controls.Add(txtPassword);
@@ -120,7 +118,7 @@
             Controls.Add(lblFullName);
             Controls.Add(lblTitle);
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            Margin = new Padding(4, 3, 4, 3);
+            Margin = new Padding(3, 2, 3, 2);
             MaximizeBox = false;
             Name = "LoginForm";
             StartPosition = FormStartPosition.CenterScreen;
