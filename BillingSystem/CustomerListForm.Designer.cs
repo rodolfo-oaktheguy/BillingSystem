@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             lblTitle = new Label();
-            dvgCustomers = new DataGridView();
+            dgvCustomers = new DataGridView();
             CustomerID = new DataGridViewTextBoxColumn();
             FullName = new DataGridViewTextBoxColumn();
             Address = new DataGridViewTextBoxColumn();
@@ -40,36 +40,36 @@
             btnDelete = new Button();
             btnLogout = new Button();
             label1 = new Label();
-            ((System.ComponentModel.ISupportInitialize)dvgCustomers).BeginInit();
+            txtSearch = new TextBox();
+            ((System.ComponentModel.ISupportInitialize)dgvCustomers).BeginInit();
             SuspendLayout();
             // 
             // lblTitle
             // 
             lblTitle.AutoSize = true;
             lblTitle.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            lblTitle.Location = new Point(41, 24);
-            lblTitle.Margin = new Padding(4, 0, 4, 0);
+            lblTitle.Location = new Point(29, 14);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(204, 38);
+            lblTitle.Size = new Size(138, 25);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Customer List ";
             lblTitle.Click += label1_Click;
             // 
-            // dvgCustomers
+            // dgvCustomers
             // 
-            dvgCustomers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dvgCustomers.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dvgCustomers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dvgCustomers.Columns.AddRange(new DataGridViewColumn[] { CustomerID, FullName, Address, ContactNumber, Email, Balance });
-            dvgCustomers.Location = new Point(8, 90);
-            dvgCustomers.Margin = new Padding(4, 4, 4, 4);
-            dvgCustomers.Name = "dvgCustomers";
-            dvgCustomers.ReadOnly = true;
-            dvgCustomers.RowHeadersWidth = 51;
-            dvgCustomers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dvgCustomers.Size = new Size(955, 378);
-            dvgCustomers.TabIndex = 1;
-            dvgCustomers.CellContentClick += dvgCustomers_CellContentClick;
+            dgvCustomers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvCustomers.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvCustomers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvCustomers.Columns.AddRange(new DataGridViewColumn[] { CustomerID, FullName, Address, ContactNumber, Email, Balance });
+            dgvCustomers.Location = new Point(6, 54);
+            dgvCustomers.Margin = new Padding(3, 2, 3, 2);
+            dgvCustomers.Name = "dgvCustomers";
+            dgvCustomers.ReadOnly = true;
+            dgvCustomers.RowHeadersWidth = 51;
+            dgvCustomers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvCustomers.Size = new Size(668, 227);
+            dgvCustomers.TabIndex = 1;
+            dgvCustomers.CellContentClick += dvgCustomers_CellContentClick;
             // 
             // CustomerID
             // 
@@ -115,10 +115,10 @@
             // 
             // button1
             // 
-            button1.Location = new Point(206, 500);
-            button1.Margin = new Padding(4, 4, 4, 4);
+            button1.Location = new Point(144, 300);
+            button1.Margin = new Padding(3, 2, 3, 2);
             button1.Name = "button1";
-            button1.Size = new Size(151, 36);
+            button1.Size = new Size(106, 22);
             button1.TabIndex = 2;
             button1.Text = "Add Customer";
             button1.UseVisualStyleBackColor = true;
@@ -126,20 +126,20 @@
             // 
             // btnDelete
             // 
-            btnDelete.Location = new Point(404, 500);
-            btnDelete.Margin = new Padding(4, 4, 4, 4);
+            btnDelete.Location = new Point(283, 300);
+            btnDelete.Margin = new Padding(3, 2, 3, 2);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(118, 36);
+            btnDelete.Size = new Size(83, 22);
             btnDelete.TabIndex = 3;
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = true;
             // 
             // btnLogout
             // 
-            btnLogout.Location = new Point(569, 500);
-            btnLogout.Margin = new Padding(4, 4, 4, 4);
+            btnLogout.Location = new Point(398, 300);
+            btnLogout.Margin = new Padding(3, 2, 3, 2);
             btnLogout.Name = "btnLogout";
-            btnLogout.Size = new Size(118, 36);
+            btnLogout.Size = new Size(83, 22);
             btnLogout.TabIndex = 4;
             btnLogout.Text = "Delete";
             btnLogout.UseVisualStyleBackColor = true;
@@ -148,31 +148,39 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            label1.Location = new Point(365, 24);
-            label1.Margin = new Padding(4, 0, 4, 0);
+            label1.Location = new Point(270, 14);
             label1.Name = "label1";
-            label1.Size = new Size(248, 38);
+            label1.Size = new Size(86, 25);
             label1.TabIndex = 5;
-            label1.Text = "Search : __________";
+            label1.Text = "Search : ";
             label1.Click += label1_Click_1;
+            // 
+            // txtSearch
+            // 
+            txtSearch.Location = new Point(362, 16);
+            txtSearch.Name = "txtSearch";
+            txtSearch.Size = new Size(301, 23);
+            txtSearch.TabIndex = 6;
+            txtSearch.TextChanged += textBox1_TextChanged;
             // 
             // CUSTOMERLISTATUN
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(978, 566);
+            ClientSize = new Size(685, 340);
+            Controls.Add(txtSearch);
             Controls.Add(label1);
             Controls.Add(btnLogout);
             Controls.Add(btnDelete);
             Controls.Add(button1);
-            Controls.Add(dvgCustomers);
+            Controls.Add(dgvCustomers);
             Controls.Add(lblTitle);
-            Margin = new Padding(4, 4, 4, 4);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "CUSTOMERLISTATUN";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Billing System - Customer List";
             Load += CustomerListForm_Load;
-            ((System.ComponentModel.ISupportInitialize)dvgCustomers).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvCustomers).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -180,7 +188,7 @@
         #endregion
 
         private Label lblTitle;
-        private DataGridView dvgCustomers;
+        private DataGridView dgvCustomers;
         private Button button1;
         private Button btnDelete;
         private DataGridViewTextBoxColumn CustomerID;
@@ -191,5 +199,6 @@
         private DataGridViewTextBoxColumn Balance;
         private Button btnLogout;
         private Label label1;
+        private TextBox txtSearch;
     }
 }
