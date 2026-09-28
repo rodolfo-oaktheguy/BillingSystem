@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            btnBaack = new TextBox();
+            btnBaack = new Button();
             btnClear = new Button();
             txtAddress = new TextBox();
             lblPassword = new Label();
@@ -37,7 +37,7 @@
             lblTitle = new Label();
             btnSave = new Button();
             lblContact = new Label();
-            lbContact = new TextBox();
+            txtContact = new TextBox();
             txtEmail = new TextBox();
             lblEmail = new Label();
             lblBalance = new Label();
@@ -52,7 +52,7 @@
             btnBaack.Size = new Size(103, 31);
             btnBaack.TabIndex = 27;
             btnBaack.Text = "Back";
-            btnBaack.TextAlign = HorizontalAlignment.Center;
+            btnBaack.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // btnClear
             // 
@@ -122,6 +122,7 @@
             btnSave.TabIndex = 25;
             btnSave.Text = "Save";
             btnSave.UseVisualStyleBackColor = true;
+            btnSave.Click += btnSave_Click;
             // 
             // lblContact
             // 
@@ -133,13 +134,13 @@
             lblContact.TabIndex = 19;
             lblContact.Text = "Contact Number:";
             // 
-            // lbContact
+            // txtContact
             // 
-            lbContact.Location = new Point(256, 234);
-            lbContact.Margin = new Padding(4, 4, 4, 4);
-            lbContact.Name = "lbContact";
-            lbContact.Size = new Size(204, 31);
-            lbContact.TabIndex = 22;
+            txtContact.Location = new Point(256, 234);
+            txtContact.Margin = new Padding(4, 4, 4, 4);
+            txtContact.Name = "txtContact";
+            txtContact.Size = new Size(204, 31);
+            txtContact.TabIndex = 22;
             // 
             // txtEmail
             // 
@@ -188,7 +189,7 @@
             Controls.Add(btnSave);
             Controls.Add(txtBalance);
             Controls.Add(txtEmail);
-            Controls.Add(lbContact);
+            Controls.Add(txtContact);
             Controls.Add(lblBalance);
             Controls.Add(lblEmail);
             Controls.Add(lblContact);
@@ -206,7 +207,7 @@
 
         #endregion
 
-        private TextBox btnBaack;
+        private Button btnBaack;
         private Button btnClear;
         private TextBox txtAddress;
         private Label lblPassword;
@@ -215,7 +216,7 @@
         private Label lblTitle;
         private Button btnSave;
         private Label lblContact;
-        private TextBox lbContact;
+        private TextBox txtContact;
         private TextBox txtEmail;
         private Label lblEmail;
         private Label lblBalance;
