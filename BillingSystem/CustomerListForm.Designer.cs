@@ -70,6 +70,8 @@
             dgvCustomers.Size = new Size(668, 227);
             dgvCustomers.TabIndex = 1;
             dgvCustomers.CellContentClick += dvgCustomers_CellContentClick;
+            dgvCustomers.CellDoubleClick += dgvCustomers_CellDoubleClick;
+            dgvCustomers.SelectionChanged += dgvCustomers_SelectionChanged;
             // 
             // CustomerID
             // 
@@ -133,6 +135,7 @@
             btnDelete.TabIndex = 3;
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
             // 
             // btnLogout
             // 
@@ -141,8 +144,9 @@
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(83, 22);
             btnLogout.TabIndex = 4;
-            btnLogout.Text = "Delete";
+            btnLogout.Text = "Logout";
             btnLogout.UseVisualStyleBackColor = true;
+            btnLogout.Click += btnLogout_Click;
             // 
             // label1
             // 
