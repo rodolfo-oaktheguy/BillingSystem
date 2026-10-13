@@ -13,6 +13,7 @@ namespace BillingSystem
             ApplicationConfiguration.Initialize();
             string appTitle = "Billing System - Member A";
             Console.WriteLine(appTitle);
+            //Application.Run(new frmAnalytics());
             Application.Run(new LoginForm());
         }
     }
