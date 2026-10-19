@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using BillingSystem.Database;
+using BillingSystem.Utils;
 using ClosedXML.Excel;
 using System.IO;
 using PdfSharp.Pdf;
@@ -20,11 +21,51 @@ namespace BillingSystem
 {
     public partial class CUSTOMERLISTATUN : Form
     {
-        // Stores the CustomerID of the currently selected row.
-        // 0 means no customer is currently selected.
         private int _selectedCustomerId = 0;
+        private Button _btnAuditLogs;
+        private Button _btnManagePermissions;
 
+        private void AddDynamicButtons()
+        {
+            _btnAuditLogs = new Button
+            {
+                Name = "btnAuditLogs",
+                Text = "Audit Logs",
+                Size = new Size(110, 22),
+                Location = new Point(440, 286),
+                Enabled = false
+            };
+            _btnAuditLogs.Click += btnAuditLogs_Click;
 
+            _btnManagePermissions = new Button
+            {
+                Name = "btnManagePermissions",
+                Text = "Manage Permissions",
+                Size = new Size(130, 22),
+                Location = new Point(560, 286),
+                Enabled = false
+            };
+            _btnManagePermissions.Click += btnManagePermissions_Click;
+
+            Controls.Add(_btnAuditLogs);
+            Controls.Add(_btnManagePermissions);
+        }
+
+        private void InitStatusStrip()
+        {
+            lblStatusUser.Text = $"User: {AppSession.CurrentUsername}  |  Role: {AppSession.CurrentRole}";
+            UpdateClock();
+        }
+
+        private void UpdateClock()
+        {
+            lblStatusTime.Text = DateTime.Now.ToString("dddd, MMMM dd yyyy   hh:mm:ss tt");
+        }
+
+        private void statusTimer_Tick(object sender, EventArgs e)
+        {
+            UpdateClock();
+        }
 
         private void LoadCustomers()
         {
@@ -135,6 +176,7 @@ namespace BillingSystem
             dgvCustomers.Columns["ContactNumber"].DataPropertyName = "ContactNumber";
             dgvCustomers.Columns["Email"].DataPropertyName = "Email";
             dgvCustomers.Columns["Balance"].DataPropertyName = "Balance";
+            dgvCustomers.Columns["Status"].DataPropertyName = "Status";
         }
         private void DeleteCustomer(int customerId)
         {
@@ -220,11 +262,45 @@ namespace BillingSystem
         {
             InitializeComponent();
             ConfigureDataGridView();
+            AddDynamicButtons();
+            dgvCustomers.CellFormatting += dgvCustomers_CellFormatting;
+            AppTheme.Apply(this);
         }
 
         private void CustomerListForm_Load(object sender, EventArgs e)
         {
+            ApplyTheme();
             LoadCustomers();
+            ApplyRolePermissions();
+            InitStatusStrip();
+        }
+
+        private void ApplyTheme()
+        {
+            AppTheme.Apply(this);
+            BackColor = AppTheme.Background;
+            button1.BackColor = AppTheme.Success;
+            btnDelete.BackColor = AppTheme.Danger;
+            btnAnalytics.BackColor = AppTheme.Primary;
+            btnExportExcel.BackColor = AppTheme.Secondary;
+            btnExportPdf.BackColor = AppTheme.Secondary;
+            _btnAuditLogs.BackColor = AppTheme.Secondary;
+            _btnManagePermissions.BackColor = AppTheme.Danger;
+            dgvCustomers.AlternatingRowsDefaultCellStyle.BackColor = AppTheme.GridRowAlt;
+            dgvCustomers.ColumnHeadersDefaultCellStyle.BackColor = AppTheme.Primary;
+            dgvCustomers.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvCustomers.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+        }
+
+        private void ApplyRolePermissions()
+        {
+            button1.Enabled = PermissionService.HasPermission("AddCustomer");
+            btnDelete.Enabled = PermissionService.HasPermission("DeleteCustomer");
+            btnAnalytics.Enabled = PermissionService.HasPermission("Analytics");
+            btnExportExcel.Enabled = PermissionService.HasPermission("ExportExcel");
+            btnExportPdf.Enabled = PermissionService.HasPermission("ExportPdf");
+            _btnAuditLogs.Enabled = PermissionService.HasPermission("AuditLogs");
+            _btnManagePermissions.Enabled = PermissionService.HasPermission("ManagePermissions");
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -234,14 +310,76 @@ namespace BillingSystem
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (!PermissionService.HasPermission("AddCustomer"))
+            {
+                MessageBox.Show("You do not have permission to add customers.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             AddCustomerFormRei addCustomerForm = new AddCustomerFormRei();
-            addCustomerForm.ShowDialog();
-            // LoadCustomers();   // enable this line in Step 4.4
+            addCustomerForm.FormClosed += (_, __) => LoadCustomers();
+            addCustomerForm.ShowDialog(this);
+            AuditLogger.LogAction("AddCustomer", "Opened Add Customer form.");
+        }
+
+        private void btnAuditLogs_Click(object sender, EventArgs e)
+        {
+            if (!PermissionService.HasPermission("AuditLogs"))
+            {
+                MessageBox.Show("You do not have permission to view audit logs.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            AuditLogger.LogAction("OpenAuditLogs", "Opened Audit Logs form.");
+            using (var auditForm = new frmAuditLogs())
+            {
+                auditForm.ShowDialog(this);
+            }
+        }
+
+        private void btnManagePermissions_Click(object sender, EventArgs e)
+        {
+            if (!PermissionService.HasPermission("ManagePermissions"))
+            {
+                MessageBox.Show("You do not have permission to manage permissions.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            AuditLogger.LogAction("OpenManagePermissions", "Opened Manage Permissions form.");
+            using (var permissionForm = new frmManagePermissions())
+            {
+                permissionForm.ShowDialog(this);
+            }
         }
 
         private void dvgCustomers_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void dgvCustomers_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0)
+            {
+                return;
+            }
+
+            if (dgvCustomers.Rows[e.RowIndex].DataBoundItem is not DataRowView rowData ||
+                !rowData.Row.Table.Columns.Contains("Status"))
+            {
+                return;
+            }
+
+            string status = rowData["Status"]?.ToString() ?? string.Empty;
+            if (string.Equals(status, "Inactive", StringComparison.OrdinalIgnoreCase))
+            {
+                e.CellStyle.BackColor = AppTheme.InactiveRowColor;
+            }
+            else if (string.Equals(status, "Active", StringComparison.OrdinalIgnoreCase) &&
+                     dgvCustomers.Columns[e.ColumnIndex].DataPropertyName == "Status")
+            {
+                e.CellStyle.BackColor = AppTheme.ActiveRowColor;
+            }
         }
 
 
@@ -270,37 +408,48 @@ namespace BillingSystem
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            // Step 1: Make sure a customer is selected
-            if (_selectedCustomerId == 0)
+            if (!PermissionService.HasPermission("DeleteCustomer"))
             {
-                MessageBox.Show("Please select a customer to delete.",
-                    "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("You do not have permission to delete customers.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // Step 2: Confirm before deleting — this cannot be undone
+            if (_selectedCustomerId == 0)
+            {
+                MessageBox.Show("Please select a customer to delete.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             DialogResult confirm = MessageBox.Show(
-                "Are you sure you want to delete this customer?\n" +
-                "All billing records for this customer will also be deleted.",
+                "Are you sure you want to delete this customer?\nAll billing records for this customer will also be deleted.",
                 "Confirm Delete",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Warning);
 
-            // Step 3: Only delete if the user clicked Yes
             if (confirm == DialogResult.Yes)
             {
                 DeleteCustomer(_selectedCustomerId);
             }
-            // If the user clicked No, do nothing — the record is preserved
         }
         private void btnLogout_Click(object sender, EventArgs e)
         {
+            AuditLogger.LogAction("Logout", $"User {AppSession.CurrentUsername} logged out.");
+            AppSession.Clear();
+
+            var loginForm = new LoginForm();
+            loginForm.Show();
+            this.Close();
         }
 
         private void btnAnalytics_Click(object sender, EventArgs e)
         {
-            // Open the Analytics Dashboard as a dialog so the
-            // Customer List stays open in the background
+            if (!PermissionService.HasPermission("Analytics"))
+            {
+                MessageBox.Show("You do not have permission to view analytics.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            AuditLogger.LogAction("OpenAnalytics", "Opened Analytics dashboard.");
             frmAnalytics analyticsForm = new frmAnalytics();
             analyticsForm.ShowDialog(this);
         }

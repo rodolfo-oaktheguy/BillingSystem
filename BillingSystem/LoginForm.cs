@@ -1,19 +1,20 @@
 namespace BillingSystem;
 using MySql.Data.MySqlClient;
 using BillingSystem.Database;
+using BillingSystem.Utils;
 
-
-    public partial class LoginForm : Form
+public partial class LoginForm : Form
 {
     public LoginForm()
     {
         InitializeComponent();
+        AppTheme.Apply(this);
     }
 
     private void Form1_Load(object sender, EventArgs e)
     {
-        // Test the database connection when the form opens.
-        // This gives a clear warning if MySQL is not running.
+        AppTheme.Apply(this);
+
         if (!DatabaseConnection.TestConnection())
         {
             MessageBox.Show(
@@ -29,10 +30,7 @@ using BillingSystem.Database;
 
         txtUsername.Focus();
     }
-    private void txtUsername_TextChanged(object sender, EventArgs e)
-    {
-
-    }
+    private void txtUsername_TextChanged(object sender, EventArgs e) { }
 
     private void btnSave_Click(object sender, EventArgs e)
     {
@@ -76,6 +74,14 @@ using BillingSystem.Database;
                         {
                             if (reader.Read())
                             {
+                                int userId = reader.GetInt32("UserID");
+                                string fullName = reader.GetString("FullName");
+                                string role = reader.GetString("Role");
+                                string username = txtUsername.Text.Trim();
+
+                                AppSession.SetCurrentUser(userId, username, fullName, role);
+                                AuditLogger.LogAction("Login", $"User {username} logged in successfully.");
+
                                 // Credentials matched — open the Customer List form
                                 CUSTOMERLISTATUN listForm = new CUSTOMERLISTATUN();
                                 listForm.Show();
