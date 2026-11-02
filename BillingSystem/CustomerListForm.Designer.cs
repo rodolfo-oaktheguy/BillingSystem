@@ -45,6 +45,8 @@
             btnAnalytics = new Button();
             btnExportExcel = new Button();
             btnExportPdf = new Button();
+            btnChangePassword = new Button();
+            btnViewBilling = new Button();
             statusStrip = new StatusStrip();
             lblStatusUser = new ToolStripStatusLabel();
             lblStatusSep = new ToolStripStatusLabel();
@@ -74,6 +76,7 @@
             dgvCustomers.Columns.AddRange(new DataGridViewColumn[] { CustomerID, FullName, Address, ContactNumber, Email, Balance, Status });
             dgvCustomers.Location = new Point(6, 54);
             dgvCustomers.Margin = new Padding(3, 2, 3, 2);
+            dgvCustomers.MultiSelect = false;
             dgvCustomers.Name = "dgvCustomers";
             dgvCustomers.ReadOnly = true;
             dgvCustomers.RowHeadersWidth = 51;
@@ -214,12 +217,32 @@
             btnExportPdf.Text = "Export to PDF";
             btnExportPdf.UseVisualStyleBackColor = true;
             btnExportPdf.Click += btnExportPdf_Click;
-            // 
+            //
+            // btnChangePassword
+            //
+            btnChangePassword.Location = new Point(29, 314);
+            btnChangePassword.Name = "btnChangePassword";
+            btnChangePassword.Size = new Size(124, 23);
+            btnChangePassword.TabIndex = 11;
+            btnChangePassword.Text = "Change Password";
+            btnChangePassword.UseVisualStyleBackColor = true;
+            btnChangePassword.Click += btnChangePassword_Click;
+            //
+            // btnViewBilling
+            //
+            btnViewBilling.Location = new Point(440, 314);
+            btnViewBilling.Name = "btnViewBilling";
+            btnViewBilling.Size = new Size(110, 23);
+            btnViewBilling.TabIndex = 12;
+            btnViewBilling.Text = "View Billing";
+            btnViewBilling.UseVisualStyleBackColor = true;
+            btnViewBilling.Click += btnViewBilling_Click;
+            //
             // statusStrip
-            // 
+            //
             statusStrip.Dock = DockStyle.Bottom;
             statusStrip.Items.AddRange(new ToolStripItem[] { lblStatusUser, lblStatusSep, lblStatusTime });
-            statusStrip.Location = new Point(0, 318);
+            statusStrip.Location = new Point(0, 343);
             statusStrip.Name = "statusStrip";
             statusStrip.Size = new Size(685, 22);
             statusStrip.TabIndex = 10;
@@ -252,8 +275,10 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(685, 340);
+            ClientSize = new Size(685, 365);
             Controls.Add(statusStrip);
+            Controls.Add(btnViewBilling);
+            Controls.Add(btnChangePassword);
             Controls.Add(btnExportPdf);
             Controls.Add(btnExportExcel);
             Controls.Add(btnAnalytics);
@@ -295,6 +320,8 @@
         private Button btnAnalytics;
         private Button btnExportExcel;
         private Button btnExportPdf;
+        private Button btnChangePassword;
+        private Button btnViewBilling;
         private StatusStrip statusStrip;
         private ToolStripStatusLabel lblStatusUser;
         private ToolStripStatusLabel lblStatusSep;

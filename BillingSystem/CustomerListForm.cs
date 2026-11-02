@@ -104,6 +104,7 @@ namespace BillingSystem
                         }
 
                         lblTitle.Text = $"Customer List  ({dt.Rows.Count} record(s))";
+                        ClearCustomerSelection();
                     }
                 }
             }
@@ -148,6 +149,7 @@ namespace BillingSystem
 
                             dgvCustomers.DataSource = dt;
                             lblTitle.Text = $"Customer List  ({dt.Rows.Count} result(s))";
+                            ClearCustomerSelection();
                         }
                     }
                 }
@@ -157,6 +159,15 @@ namespace BillingSystem
                 MessageBox.Show($"Error searching customers:\n{ex.Message}",
                     "Search Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        // The grid auto-selects its first row when bound or first shown. Clearing it means
+        // the user has to pick a customer themselves, and nothing acts on an unhighlighted row.
+        private void ClearCustomerSelection()
+        {
+            dgvCustomers.ClearSelection();
+            dgvCustomers.CurrentCell = null;
+            _selectedCustomerId = 0;
         }
 
         private void txtSearch_KeyPress(object sender, KeyPressEventArgs e)
@@ -264,6 +275,7 @@ namespace BillingSystem
             ConfigureDataGridView();
             AddDynamicButtons();
             dgvCustomers.CellFormatting += dgvCustomers_CellFormatting;
+            Shown += (_, __) => ClearCustomerSelection();
             AppTheme.Apply(this);
         }
 
@@ -334,6 +346,33 @@ namespace BillingSystem
             using (var auditForm = new frmAuditLogs())
             {
                 auditForm.ShowDialog(this);
+            }
+        }
+
+        // Available to every logged-in user (Admin and Cashier) - intentionally not permission-gated.
+        private void btnChangePassword_Click(object sender, EventArgs e)
+        {
+            using (var changePasswordForm = new frmChangePassword())
+            {
+                changePasswordForm.ShowDialog(this);
+            }
+        }
+
+        private void btnViewBilling_Click(object sender, EventArgs e)
+        {
+            // Read the ID from the row selected right now, so a previous selection can't be reused.
+            if (dgvCustomers.SelectedRows.Count == 0 ||
+                !int.TryParse(dgvCustomers.SelectedRows[0].Cells["CustomerID"].Value?.ToString(), out int customerId))
+            {
+                MessageBox.Show("Please select a customer first to view their billing records.",
+                    "No Customer Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            AuditLogger.LogAction("ViewBilling", $"Viewed billing history for customer ID {customerId}.");
+            using (var billingForm = new frmBillingHistory(customerId))
+            {
+                billingForm.ShowDialog(this);
             }
         }
 
